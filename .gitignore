@@ -56,7 +56,7 @@ dist/*
 
 # Jupyter lab
 *.ipynb_checkpoints
-*.ipynb
+
 
 # Terraform
 terraform.tfstate*
