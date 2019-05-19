@@ -49,7 +49,11 @@ endef
 # -------------
 .PHONY: build-tf-gcp
 build-tf-gcp:
-	@docker build --tag tf-gcp ../../builds/terraform
+	@docker build --tag tf-gcp ./builds/terraform
+
+.PHONY: build-jupyter-lab
+build-jupyter-lab:
+	@docker build --tag presentation ./builds/jupyter-lab
 
 .PHONY: clean
 clean:
