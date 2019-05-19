@@ -1,0 +1,41 @@
+img.background_bottom_right{
+    position:absolute;
+    right:0px;
+    bottom: 0px;
+    max-width: 40%;
+    height: auto;
+}
+img.background_bottom_left{
+    position:absolute;
+    left:0px;
+    bottom: 0px;
+    max-width: 15%;
+    height: auto;
+}
+img.background_header{
+    position:absolute;
+    vertical-align: middle;
+    margin: 8%;
+}
+img.title{
+    max-width: 80%;
+    height: auto;
+    float: right;
+    position: relative;
+    left: -10%; /* or right 50% */
+}
+img.material{
+    max-width: 65%;
+    height: auto;
+    float: right;
+    position: relative;
+    left: -15%; /* or right 50% */
+}
+div.slide_header{
+    top: 8px;
+    left: 16px;
+    font-size: 50px;
+}
+div.title{
+    font-size: 30px;
+}

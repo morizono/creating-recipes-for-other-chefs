@@ -1,0 +1,20 @@
+# If this compose file is filled with sensitive values (i.e. service principle credentials),
+# I do not recommend storing this file in git.
+
+version: '3.7'
+
+services:
+  dev_env:
+    image: tf-gcp
+    build:
+      context: build/terraform
+      dockerfile: Dockerfile
+    environment:
+      TF_VAR_org_id:
+      TF_VAR_billing_account:
+      TF_ADMIN:
+      TF_CREDS:
+    volumes:
+      - ../terraform:/root
+    command: >
+      bash
