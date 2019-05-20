@@ -12,11 +12,7 @@ img.background_bottom_left{
     max-width: 15%;
     height: auto;
 }
-img.background_header{
-    position:absolute;
-    vertical-align: middle;
-    margin: 8%;
-}
+
 img.title{
     max-width: 80%;
     height: auto;
@@ -36,6 +32,12 @@ div.slide_header{
     left: 16px;
     font-size: 50px;
 }
+div.slide_body{
+    
+}
 div.title{
+    font-size: 40px;
+}
+div.sub-title{
     font-size: 30px;
 }
