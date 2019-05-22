@@ -11,6 +11,14 @@ module "project" {
 
 module "project_services" {
   source     = "../../modules/project/modules/services"
-  project_id = "${module.project.product_id}"
-  services   = "iam.googleapis.com,cloudresourcemanager.googleapis.com,compute.googleapis.com,cloudbilling.googleapis.com,container.googleapis.com,deploymentmanager.googleapis.com,servicemanagement.googleapis.com"
+  project_id = "${module.project.project_id}"
+  services   = "iam.googleapis.com,cloudresourcemanager.googleapis.com,compute.googleapis.com,cloudbilling.googleapis.com,container.googleapis.com,deploymentmanager.googleapis.com,servicemanagement.googleapis.com,storage-component.googleapis.com,storagetransfer.googleapis.com"
+}
+
+module "storage_bucket" {
+  source        = "../../modules/storage_bucket"
+  name          = "${format("%s-%s-%s", module.project.project_name, "pachyderm", module.project.guid)}"
+  project       = "${module.project_services.project_id}"
+  location      = "${var.location}"
+  storage_class = "REGIONAL"
 }

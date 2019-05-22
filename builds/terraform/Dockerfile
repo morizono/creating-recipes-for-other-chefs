@@ -2,7 +2,8 @@ FROM google/cloud-sdk
 
 ENV BUILD_PACKAGES \
     wget \
-    make
+    make \
+    uuid-runtime
 
 RUN apt-get -y update && \
     apt-get -y install ${BUILD_PACKAGES}
@@ -35,6 +36,10 @@ ENV KF_URL=https://github.com/kubeflow/kubeflow/releases/download/v${KF_VERSION}
 RUN wget -O kf.tar.gz ${KF_URL} && \
     tar -C /usr/local/bin -xzf kf.tar.gz && \
     rm kf.tar.gz
+
+# Install pachctl
+RUN wget -O /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v1.9.0rc2/pachctl_1.9.0rc2_amd64.deb \
+    && dpkg -i /tmp/pachctl.deb
 
 RUN mkdir -p /deployments
 WORKDIR /deployments

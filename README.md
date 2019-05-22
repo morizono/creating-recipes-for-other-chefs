@@ -6,3 +6,5 @@ https://mybinder.org/v2/gh/bryan-nice/creating-recipes-for-other-chefs/master?fi
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/bryan-nice/creating-recipes-for-other-chefs/master?filepath=documents%2Findex.ipynb)
 
 https://hub.mybinder.org/user/bryan-nice-crea-for-other-chefs-f68810um/notebooks/documents/index.ipynb
+
+ docker-compose -f test.yml run --rm --service-ports -d documentation
