@@ -30,20 +30,27 @@ python3			:= $(shell command -v python3 2> /dev/null)
 # -------------
 # VARIABLES
 # -------------
-STATEFILE_NAME := $(ENV)-$(TF_VAR_project_name).terraform.tfstate
-ENV_VARS = "$(PWD)/deployments/terraform/environments/$(ENV)"
 
 # -------------
 # FUNCTIONS
 # -------------
 define set_project_var
-	$(eval PROJECT=$(PWD)/deployments/terraform/recipes/$(1))
+	$(eval PROJECT := $(PWD)/deployments/terraform/recipes/$(1))
 endef
 
 define set_statefile_name
-	$(eval STATEFILE_NAME=$(1).terraform.tfstate)
+	$(eval PREFIX := terraform/$(1))
+	$(eval STATEFILE_NAME := $(1).terraform.tfstate)
 endef
 
+define set_backend_bucket
+	$(eval BACKEND_PROJECT_ID := $(shell gcloud projects list --filter=devops --format='value(project_id)' --limit 1))
+	$(eval BACKEND_BUCKET := $(shell gsutil ls -p $(BACKEND_PROJECT_ID)))
+endef
+
+define set_common_vars
+	$(eval COMMON_VARS := $(PWD)/deployments/terraform/environments/$(1))
+endef
 # -------------
 # TASKS
 # -------------
@@ -82,7 +89,9 @@ fmt:
 .PHONY: set-recipe
 set-recipe:
 	$(call set_project_var,$(RECIPE))
+	$(call set_common_vars,$(ENV))
 	$(call set_statefile_name,$(ENV)-$(RECIPE))
+	$(call set_backend_bucket)
 
 .PHONY: setup-backend
 setup-backend:
@@ -107,11 +116,13 @@ init: set-recipe fmt login
 	@cd $(PWD)/deployments/terraform; \
 	if [ ! -f "./beconf.tfvars" ]; then \
 		cp templates/beconf.sample.tfvars beconf.tfvars; \
-		sed -ie '/^billing_account/s/\"\"/\"$(TF_VAR_billing_account)\"/g' beconf.tfvars; \
-		sed -ie '/^project_name/s/\"\"/\"$(TF_VAR_project_name)\"/g' beconf.tfvars; \
+		sed -ie 's|^\(bucket = \)""|\1"$(BACKEND_PROJECT_ID)"|g' beconf.tfvars; \
+		sed -ie 's|^\(prefix = \)""|\1"$(PREFIX)"|g' beconf.tfvars; \
+		sed -ie 's|^\(project = \)""|\1"$(BACKEND_PROJECT_ID)"|g' beconf.tfvars; \
 	else \
-		sed -ie '/^billing_account/s/\".*\"/\"$(TF_VAR_billing_account)\"/g' beconf.tfvars; \
-		sed -ie '/^project_name/s/\"\"/\"$(TF_VAR_project_name)\"/g' beconf.tfvars; \
+		sed -ie 's|^\(bucket = \)""|\1"$(BACKEND_PROJECT_ID)"|g' beconf.tfvars; \
+		sed -ie 's|^\(prefix = \)""|\1"$(PREFIX)"|g' beconf.tfvars; \
+		sed -ie 's|^\(project = \)""|\1"$(BACKEND_PROJECT_ID)"|g' beconf.tfvars; \
 	fi;\
 	terraform init \
 		-input=false \
@@ -128,7 +139,7 @@ plan: init
 		-input=false \
 		-refresh=true \
 		-var-file=beconf.tfvars \
-		-var-file=$(ENV_VARS)/common.tfvars \
+		-var-file=$(COMMON_VARS)/common.tfvars \
 		$(PROJECT)
 
 .PHONY: gcp-project
@@ -139,7 +150,7 @@ gcp-project: init
 		-input=false \
 		-refresh=true \
 		-var-file=beconf.tfvars \
-		-var-file=$(ENV_VARS)/common.tfvars \
+		-var-file=$(COMMON_VARS)/common.tfvars \
 		$(PROJECT)
 
 .PHONY: gcp-kubeflow
@@ -156,4 +167,8 @@ gcp-pachyderm: login set-gcp-project
 	@echo "$(BOLD)$(YELLOW)Deploying Pachyderm on K8..$(RESET)"
 	cd $(PWD)/deployments/terraform; \
 	pachctl deploy google $(BUCKET_NAME) $(BUCKET_SIZE) --dynamic-etcd-nodes=$(NODE_NUM)
+
+.PHONY: documentation
+documentation:
+	@docker-compose -f test.yml run --rm --service-ports -d documentation
 
