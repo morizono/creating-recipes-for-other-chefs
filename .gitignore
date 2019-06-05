@@ -1,3 +1,4 @@
+*.ksonnet
 *.backup
 .azure*
 sshkey*
