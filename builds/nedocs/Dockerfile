@@ -1,6 +1,6 @@
 FROM python:3.7.2-stretch
 
-ENV R_PACKAGES 
+ENV R_PACKAGES "'randomforest','lubridate', 'timedata'"
 #this limits how many layers of packages needed in your image
 #makes it easier to audit what packages used.
 
@@ -11,10 +11,11 @@ RUN apt-get -y update && \
         pandoc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    #is written this way as blocks to make it easier to see when things fail
 
 RUN R -e "install.packages(c(${R_PACKAGES}), dependencies=T, repos='http://cran.us.r-project.org')"
 
-ENV TZ=America/Los_Angeles
+ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN mkdir -p /r-files
