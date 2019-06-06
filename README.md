@@ -3,13 +3,14 @@
 ![](assets/title_slide.png)
 
 ## Overview
-1) Get Ingredients
+1) Mise En Place
 2) Set Up Equipment
-3) Create a Shopping List
-4) Create Recipe Directions
-5) Make Dish
-6) Taste Test
-7) Serve to Other Chefs
+3) Get Ingredients
+4) Create a Shopping List
+5) Create Recipe Directions
+6) Make Dish
+7) Taste Test
+8) Serve to Other Chefs
 
 ## 1) Mise En Place
 - DockerHub Account [https://hub.docker.com/signup](https://hub.docker.com/signup)
