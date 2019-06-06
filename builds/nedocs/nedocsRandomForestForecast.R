@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+# checks for Rscript env and pulls
 
 packages <- c("randomForest", "lubridate", "timeDate")
 sapply(packages, require, character.only = TRUE)
