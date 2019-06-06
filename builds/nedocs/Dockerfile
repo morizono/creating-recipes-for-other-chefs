@@ -1,6 +1,6 @@
 FROM python:3.7.2-stretch
 
-ENV R_PACKAGES "'randomForest','lubridate','timeDate'"
+ENV R_PACKAGES
 
 RUN apt-get -y update && \
     apt-get -y install \
