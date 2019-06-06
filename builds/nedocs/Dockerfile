@@ -1,6 +1,8 @@
 FROM python:3.7.2-stretch
 
-ENV R_PACKAGES
+ENV R_PACKAGES 
+#this limits how many layers of packages needed in your image
+#makes it easier to audit what packages used.
 
 RUN apt-get -y update && \
     apt-get -y install \
