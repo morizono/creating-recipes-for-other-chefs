@@ -19,7 +19,7 @@
 - GitHub Account [https://github.com/join?source=header-home](https://github.com/join?source=header-home)
 
 ## 2) Set Up Equipment
-- Fork repo https://github.com/bryan-nice/creating-recipes-for-other-chefs.git
+- Fork repo [https://github.com/bryan-nice/creating-recipes-for-other-chefs.git](https://github.com/bryan-nice/creating-recipes-for-other-chefs.git)
 - Create DockerHub Repo and Link forked GitHub Repo to it
 
 ## 3) Get Ingredients
@@ -30,13 +30,16 @@ git clone https://github.com/bryan-nice/creating-recipes-for-other-chefs.git
 ```
 
 ## 4) Create Shopping List
-- Open Model Code
-  - Identify Libraries
-  - How data is inputted
-  - How data is outputted
+  - Open the file [nedocsRandomForestForecast.R](R-Model/nedocsRandomForestForecast.R)
+  - At the top of the file add `#!/usr/bin/env Rscript`. This will enable the bash interpreter to use the correct kernel so it can be executed like an app. 
+  - Look for the line where the variable `packages` exists and take note of the packages required for this model to function.
+  - Let's inspect the R file to understand how data is following in and out of the model process.
 
 ## 5) Create Recipe Directions 
-- Create a DockerFile
+  - Open `Dockerfile` and add the list of required pacakages to the line with `ENV R_PACKAGE`. (Should look like `ENV R_PACKAGE "'a','b','c'"`)
+  - Let's inspect the `Dockerfile` to understand the instructions.
+  - Save and close `Dockerfile`
+
 
 ## 6) Make Dish
 Execute docker build command to create the image locally.

@@ -1,4 +1,3 @@
-#!/usr/bin/env Rscript
 
 packages <- c("randomForest", "lubridate", "timeDate")
 sapply(packages, require, character.only = TRUE)
